@@ -1,0 +1,86 @@
+{
+    "personMappings": [
+        {
+            "name": "Contact.Business.Phone.Fixed",
+            "mode": "field",
+            "value": "PhoneNumber",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "Contact.Personal.Email",
+            "mode": "field",
+            "value": "Email",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "ExternalId",
+            "mode": "field",
+            "value": "ExternalId",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "Name.FamilyName",
+            "mode": "field",
+            "value": "LastName",
+            "validation": {
+                "required": true
+            }
+        },
+        {
+            "name": "Name.GivenName",
+            "mode": "field",
+            "value": "FirstName",
+            "validation": {
+                "required": false
+            }
+        }
+    ],
+    "contractMappings": [
+        {
+            "name": "Department.ExternalId",
+            "mode": "field",
+            "value": "departmentUuid",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "EndDate",
+            "mode": "field",
+            "value": "endAt",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "ExternalId",
+            "mode": "field",
+            "value": "ExternalId",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "StartDate",
+            "mode": "field",
+            "value": "startAt",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "Title.Name",
+            "mode": "field",
+            "value": "Product.name",
+            "validation": {
+                "required": false
+            }
+        }
+    ]
+}
