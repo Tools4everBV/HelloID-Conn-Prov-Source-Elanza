@@ -1,0 +1,43 @@
+[
+    {
+        "key": "ApiKey",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "type": "password",
+            "label": "ApiKey",
+            "description": "The ApiKey to connect to the API",
+            "required": true
+        }
+    },
+    {
+        "key": "BaseUrl",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "label": "BaseUrl",
+            "description": "The URL to the API.",
+            "required": true
+        }
+    },
+    {
+        "key": "PastDays",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "label": "PastDays",
+            "description": "Specify the number of days in the past from which the plannedWorkers will be imported.",
+            "required": true
+        }
+    },
+    {
+        "key": "FutureDays",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "label": "FutureDays",
+            "description": "Specify the number of days in the future until the plannedWorkers will be imported.",
+            "required": true
+        }
+    }
+]
