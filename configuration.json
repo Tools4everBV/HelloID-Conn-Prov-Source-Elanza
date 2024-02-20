@@ -21,12 +21,12 @@
         }
     },
     {
-        "key": "PastDays",
+        "key": "HistoricalDays",
         "type": "input",
         "defaultValue": "",
         "templateOptions": {
-            "label": "PastDays",
-            "description": "Specify the number of days in the past from which the plannedWorkers will be imported.",
+            "label": "HistoricalDays",
+            "description": "The number of days in the past from which the workers and shifts will be imported.",
             "required": true
         }
     },
@@ -36,7 +36,17 @@
         "defaultValue": "",
         "templateOptions": {
             "label": "FutureDays",
-            "description": "Specify the number of days in the future until the plannedWorkers will be imported.",
+            "description": "The number of days in the future from which the workers and shifts will be imported.",
+            "required": true
+        }
+    },
+    {
+        "key": "ShiftDetailsStart",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "label": "ShiftDetailsStart",
+            "description": "The number of days for which the shift details will be added as a contract rule.",
             "required": true
         }
     }
