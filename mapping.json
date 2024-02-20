@@ -1,17 +1,17 @@
 {
     "personMappings": [
         {
-            "name": "Contact.Business.Phone.Fixed",
+            "name": "Contact.Business.Email",
             "mode": "field",
-            "value": "PhoneNumber",
+            "value": "Email",
             "validation": {
                 "required": false
             }
         },
         {
-            "name": "Contact.Personal.Email",
+            "name": "Contact.Business.Phone.Mobile",
             "mode": "field",
-            "value": "Email",
+            "value": "PhoneNumber",
             "validation": {
                 "required": false
             }
@@ -43,25 +43,17 @@
     ],
     "contractMappings": [
         {
-            "name": "Department.ExternalId",
-            "mode": "field",
-            "value": "departmentUuid",
-            "validation": {
-                "required": false
-            }
-        },
-        {
-            "name": "EndDate",
-            "mode": "field",
-            "value": "endAt",
-            "validation": {
-                "required": false
-            }
-        },
-        {
             "name": "ExternalId",
             "mode": "field",
             "value": "ExternalId",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "Type.Description",
+            "mode": "field",
+            "value": "Type",
             "validation": {
                 "required": false
             }
@@ -75,9 +67,25 @@
             }
         },
         {
+            "name": "EndDate",
+            "mode": "field",
+            "value": "endAt",
+            "validation": {
+                "required": false
+            }
+        },
+        {
             "name": "Title.Name",
             "mode": "field",
-            "value": "Product.name",
+            "value": "title",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "Department.ExternalId",
+            "mode": "field",
+            "value": "departmentUuid",
             "validation": {
                 "required": false
             }
