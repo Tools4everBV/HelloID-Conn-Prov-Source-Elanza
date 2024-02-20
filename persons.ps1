@@ -89,20 +89,56 @@ function Resolve-ElanzaError {
 #endregion
 
 try {
-    $past = (Get-Date).AddDays(-$($config.PastDays)).ToString("yyyy-MM-ddTHH:mm:ssZ")
-    $future = (Get-Date).AddDays($($config.FutureDays)).ToString("yyyy-MM-ddTHH:mm:ssZ")
-    $response = Invoke-ElanzaRestMethod -Uri "plannedWorkers?from=$past&to=$future"
+    $historicalDays = (Get-Date).ToUniversalTime().AddDays(-$($config.HistoricalDays))
+    $futureDays = (Get-Date).ToUniversalTime().AddDays($($config.FutureDays))
+    $response = Invoke-ElanzaRestMethod -Uri "plannedWorkers?from=$($historicalDays.ToString('yyyy-MM-ddTHH:mm:ssZ'))&to=$($futureDays.ToString('yyyy-MM-ddTHH:mm:ssZ'))"
     foreach ($worker in $response.workers) {
 
-        $contracts = [System.Collections.Generic.List[object]]::new()
-        foreach ($shift in $worker.shifts){
-            if (-not[string]::IsNullOrEmpty($shift.productUuid)){
-                $productDetails = Get-ElanzaProductById -Id $shift.productUuid
-            }
+        $detailsStartDate = (Get-Date).ToUniversalTime().AddDays(-$($config.ShiftDetailsStart)).Date
+        $detailsEndDate = $futureDays
 
-            $shift | Add-Member -MemberType 'NoteProperty' -Name 'ExternalId' -Value $shift.uuid
-            $shift | Add-Member -MemberType 'NoteProperty' -Name 'Product'    -Value $productDetails
-            $contracts.Add($shift)
+        $historyStartDate = $historicalDays
+        $historyEndDate = (Get-Date $detailsStartDate).ToUniversalTime().AddDays(-1).Date
+
+        # Create an empty list that will hold all shifts (contracts)
+        $contracts = [System.Collections.Generic.List[object]]::new()
+
+        # Create the object that will hold all historical data as one aggregated object with a custom type
+        $historicalShiftContract = @{
+            ExternalId  = $($worker.worker.workerNumber)
+            Shifts      = [System.Collections.Generic.List[object]]::new()
+            Type        = 'HistoricalShift'
+            ProductName = 'unavailable'
+
+            # Add the same fields as for shift. Otherwise, the HelloID mapping will fail
+            # The value of both the 'startAt' and 'endAt' cannot be null. If empty, HelloID is unable
+            # to determine the start/end date, resulting in the contract marked as 'active'.
+            startAt        = $historyStartDate.ToString('yyyy-MM-ddTHH:mm:ssZ')
+            endAt          = $historyEndDate.ToString('yyyy-MM-ddTHH:mm:ssZ')
+            title          = 'unavailable'
+            productUuid    = 'unavailable'
+            departmentUuid = 'unavailable'
+        }
+        $contracts.Add($historicalShiftContract)
+
+        foreach ($shift in $worker.shifts){
+            if (![string]::IsNullOrEmpty($shift.StartAt)){
+                $shiftStart = [DateTime]::Parse($shift.startAt)
+
+                if ($shiftStart -ge $detailsStartDate -and $shiftStart -le $detailsEndDate) {
+                    if (-not[string]::IsNullOrEmpty($shift.productUuid)){
+                        $productDetails = Get-ElanzaProductById -Id $shift.productUuid
+                    }
+                    $shift | Add-Member -MemberType 'NoteProperty' -Name 'ExternalId'  -Value $shift.uuid
+                    $shift | Add-Member -MemberType 'NoteProperty' -Name 'ProductName' -Value $productDetails.name
+                    $shift | Add-Member -MemberType 'NoteProperty' -Name 'Type'        -Value 'ActiveShift'
+                    $contracts.Add($shift)
+                } elseif ($shiftStart -ge $historyStartDate -and $shiftStart -le $historyEndDate) {
+                    $historicalShiftContract['Shifts'].Add($shift)
+                }
+            } else {
+                Write-Verbose "Attribute: [startAt] is empty. Import failed for shift with id: [$($shift.uuid)] and worker: [$($worker.worker.workerNumber)]."
+            }
         }
 
         $personObj = [PSCustomObject]@{
