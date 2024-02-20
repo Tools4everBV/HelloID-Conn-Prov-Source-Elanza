@@ -92,10 +92,9 @@ function Resolve-ElanzaError {
 #endregion
 
 try {
-    $past = (Get-Date).AddDays(-$($config.PastDays)).ToString("yyyy-MM-ddTHH:mm:ssZ")
-    $future = (Get-Date).AddDays($($config.FutureDays)).ToString("yyyy-MM-ddTHH:mm:ssZ")
-    $response = Invoke-ElanzaRestMethod -Uri "plannedWorkers?from=$past&to=$future"
-
+    $historicalDays = (Get-Date).ToUniversalTime().AddDays(-$($config.HistoricalDays))
+    $futureDays = (Get-Date).ToUniversalTime().AddDays($($config.FutureDays))
+    $response = Invoke-ElanzaRestMethod -Uri "plannedWorkers?from=$($historicalDays.ToString('yyyy-MM-ddTHH:mm:ssZ'))&to=$($futureDays.ToString('yyyy-MM-ddTHH:mm:ssZ'))"
     foreach ($worker in $response.workers) {
         foreach ($shift in $worker.shifts){
             if (-not[string]::IsNullOrEmpty($shift.departmentUuid)){
@@ -119,3 +118,5 @@ try {
         Throw "Could not import Elanza departments. Error: $($errorObj.FriendlyMessage)"
     }
 }
+
+
