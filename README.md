@@ -19,16 +19,15 @@
     - [Connection settings](#connection-settings)
     - [Remarks](#remarks)
       - [Logic in-depth](#logic-in-depth)
-        - [How does the above translates to code](#how-does-the-above-translates-to-code)
         - [What if the `startAt` is empty?](#what-if-the-startat-is-empty)
       - [`HistoricalDays` \& `FutureDays`](#historicaldays--futuredays)
       - [Empty `workerNumber`](#empty-workernumber)
       - [No API call to get a list of departments and products](#no-api-call-to-get-a-list-of-departments-and-products)
-        - [Person import](#person-import)
-        - [Department import](#department-import)
+        - [Person / department import](#person--department-import)
       - [Customized error handling](#customized-error-handling)
   - [Getting help](#getting-help)
   - [HelloID docs](#helloid-docs)
+
 
 ## Introduction
 
@@ -89,52 +88,6 @@ That means that with the settings: `$historicalDays` _60_, `$futureDays` _14_ an
 
 Ultimately, a total of __22__ contracts will be imported.
 
-##### How does the above translates to code
-
-Lets assume we have the following configuration settings:
-
-- `HistoricalDays` _60_.
-- `FutureDays` _14_.
-- `ShiftDetailsStart` _7_.
-
-The first step is to retrieve all _plannedWorkers_ from within the specified timeframe.
-
-```powershell
-$historicalDays = (Get-Date).AddDays(-$($config.HistoricalDays))
-$futureDays = (Get-Date).AddDays($($config.FutureDays))
-
-$response = Invoke-ElanzaRestMethod -Uri "plannedWorkers?from=$($historicalDays.ToString("yyyy-MM-ddTHH:mm:ssZ"))&to=$($futureDays.ToString("yyyy-MM-ddTHH:mm:ssZ"))"
-```
-
-Next, we loop through each of the _plannedWorkers_ and their shifts based on:
-
-- `$detailsStartDate` which is the __current__ date __minus__ the value from `ShiftDetailsStart`.
-- `$detailsEndDate` which is the __current__ date __plus__ the value from `FutureDays`.
-
-> Remember: if the `ShiftDetailsStart` is set to _7_, only the _last_ _7_ days of the _HistoricalDays_ will result in individual contracts. Hence, these _7_ days will be subtracted from the _current_ date.
-
-```powershell
-$detailsStartDate = (Get-Date).AddDays(-$($config.ShiftDetailsRange)).Date
-$detailsEndDate = (Get-Date).AddDays($($config.FutureDays))
-if ($shiftStart -ge $detailsStartDate -and $shiftStart -le $detailsEndDate){
-  # Import as regular contract
-}
-```
-
-The last step is to import the historical data aggregated into one contract object based on:
-
-- `$historyStartDate` which is the __current__ date __minus__ the value from `HistoricalDays`.
-- `$historyEndDate` which is the date from the `$detailsStartDate` __minus__ _1_. This prevents importing the last contract both as an individual contract and as part of the aggregated contract object.
-
-
-```powershell
-$historyStartDate = $historicalDays
-$historyEndDate = (Get-Date $detailsStartDate).AddDays(-1).Date
-if ($shiftStart -ge $historyStartDate -and $shiftStart -le $historyEndDate) {
-  # Import as one aggregated contract object
-}
-```
-
 ##### What if the `startAt` is empty?
 
 We made the assumption that this is not possible. Since the _plannedWorkers_ API call is custom made for _HelloID_ and because this call is meant to return shifts within the specified __mandatory__ time frame. However, we added some simple logic in case it happens.
@@ -174,44 +127,16 @@ The response to retrieve all _plannedWorkers_ is as follows:
 
 Both the `productUuid` and `departmentUuid` are part of the _shifts_ object.
 
-- The _product_ returns a string containing the 'competitie' or _skill_ and is mapped to the _title_ attribute within HelloID.
-- The _department_ returns the departmental information.
-- Both _product_ and _department_ have a __1:N__ relation.
+- The _productUuid__ contains a _uuid_ that corresponds with a _product_. The _product_ contains the _skill_ or 'competitie'. 
+  Its mapped to the _title_ attribute within HelloID.
 
-This means that; in both the _person_ and _department_ import scripts, __ALL__ _plannedWorkers_ will be retrieved, looped through and for each `worker.shift`, the product and department data is retrieved.
+- The _departmentUuid_ contains the _uuid_ of the department and corresponds with a _department_ object.
+  
+Both the _product_ and _department_ have a __1:N__ relation.
 
-##### Person import
+##### Person / department import
 
-Because the _product_ and _department_ have a __1:N__ relation, we added some logic to prevent retrieving the same object.
-
-Within the _person_ import, this flow is currently as follows:
-
-- Loop through each of the workers and their shifts.
-- Call the function `Get-ElanzaProductById`.
-- Verify if the product is already in the `$retrievedProducts` dictionary.
-  - __If true:__
-    - Return the product from the `$retrievedProducts` dictionary.
-  - __If false:__
-  - Retrieve the product from the API.
-  - Add the product to the `$retrievedProducts` dictionary.
-  - Return the product from the `$retrievedProducts` dictionary.
-
-##### Department import
-
-Because the _department_ objects will also need to be extended with additional attributes like the `ExternalId`, the logic to prevent retrieving the same object is a little different in the _department_ import script.
-
-The _department_ import uses a `[System.Collection.Generic.List[object]]` to which a retrieved department will be added. The flow is as follows:
-
-- Loop through each of the workers and their shifts.
-- Call the function `Get-ElanzaDepartmentById`.
-- Verify if the department is already in the `$retrievedDepartments` list.
-  - __If true:__
-    - Return the department from the `$retrievedDepartments` list.
-  - __If false:__
-    - Retrieve the department from the API.
-    - Extend the object with the appropriate fields for HelloID.
-    - Add the extended department to the `$retrievedDepartments` list.
-    - Return the department from the `$retrievedDepartments` list.
+Because the _product_ and _department_ have a __1:N__ relation, we added some logic to prevent retrieving the same object in both the _person_ and _department_ import.
 
 #### Customized error handling
 
