@@ -97,8 +97,11 @@ try {
         $detailsStartDate = (Get-Date).ToUniversalTime().AddDays(-$($config.ShiftDetailsStart)).Date
         $detailsEndDate = $futureDays
 
-        $historyStartDate = $historicalDays
-        $historyEndDate = (Get-Date $detailsStartDate).ToUniversalTime().AddDays(-1).Date
+        #$historyStartDate = $historicalDays
+        #$historyEndDate = (Get-Date $detailsStartDate).ToUniversalTime().AddDays(-1).Date
+
+        $historyStartDate = (Get-Date $detailsStartDate).ToUniversalTime().AddDays(-1).Date
+        $historyEndDate = $historicalDays
 
         # Create an empty list that will hold all shifts (contracts)
         $contracts = [System.Collections.Generic.List[object]]::new()
