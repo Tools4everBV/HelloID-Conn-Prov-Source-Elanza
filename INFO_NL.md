@@ -1,5 +1,3 @@
-## Elanza Source Connector
-
 De Elanza Source Connector koppelt het zorgplatform Elanza aan je doelsystemen via de identity & access management (IAM)-oplossing HelloID van Tools4ever. De integratie tilt het beheer van accounts en autorisaties in de doelsystemen die je als zorgorganisatie gebruikt naar een hoger niveau. Je automatiseert hiermee account provisioning in belangrijke mate. Prettig, want de flexmedewerkers en uitzendkrachten waarmee veel zorgorganisaties werken zorgen voor een groot aantal mutaties in je doelsystemen. Dankzij de koppeling tussen Elanza en je doelsystemen heb je hiernaar geen omkijken. In dit artikel lees je meer over deze connector, de mogelijkheden die deze integratie biedt en de voordelen. 
 
 ## Wat is Elanza?
