@@ -1,5 +1,3 @@
-## Elanza Source Connector
-
 The Elanza Source Connector links the Elanza healthcare platform to your target systems via Tools4ever’s identity & access management (IAM) solution HelloID. This integration enhances the management of accounts and authorisations in the target systems used by your healthcare organisation. It significantly automates account provisioning, which is especially beneficial given the high turnover of flexible and temporary staff in many healthcare organisations, which requires a large number of mutations in your target systems. Thanks to the integration between Elanza and your target systems, you won’t need to worry about managing these changes. This article provides more information about the connector, its capabilities and benefits.
 
 ##  What is Elanza?
@@ -38,12 +36,12 @@ HelloID uses Elanza’s REST APIs to read source data and make it available in t
 
 You can link Elanza to a wide range of target systems via HelloID. This integration relieves you of significant work and enhances the management of both users and authorisations. Among other things, it automates updates in your target systems based on information from Elanza. Some common integrations include:
 
-**Elanza – Active Directory integration:** The integration between Elanza and Active Directory eliminates manual management and prevents human errors. Automated synchronisation between Elanza and Active Directory ensures that accounts and authorisations are always up-to-date.
+* **Elanza – Active Directory integration:** The integration between Elanza and Active Directory eliminates manual management and prevents human errors. Automated synchronisation between Elanza and Active Directory ensures that accounts and authorisations are always up-to-date.
 
-**Elanza – Entra ID integration:** Like the Active Directory integration, the Entra ID integration reduces manual management tasks and minimises the risk of human errors. It also ensures that accounts and authorisations are always up-to-date.
+* **Elanza – Entra ID integration:** Like the Active Directory integration, the Entra ID integration reduces manual management tasks and minimises the risk of human errors. It also ensures that accounts and authorisations are always up-to-date.
 
-**Elanza – TOPdesk integration:** This integration allows for the fully automatic provisioning of personal cards. This is beneficial as it enables flexible and temporary staff to use the IT Service Management processes within the organisation.
+* **Elanza – TOPdesk integration:** This integration allows for the fully automatic provisioning of personal cards. This is beneficial as it enables flexible and temporary staff to use the IT Service Management processes within the organisation.
 
-**Elanza – Nedap ONS integration:** This integration ensures that healthcare workers always have the correct authorisations within the Electronic Client Record. This guarantees that staff with active shifts always has access to the necessary information.
+* **Elanza – Nedap ONS integration:** This integration ensures that healthcare workers always have the correct authorisations within the Electronic Client Record. This guarantees that staff with active shifts always has access to the necessary information.
 
 More than 200 connectors are available for HelloID. You can link the Tools4ever IAM solution to a wide range of source and target systems. The extensive integration possibilities enable you to connect Elanza to almost all popular target systems. An overview of all connectors is available here.
