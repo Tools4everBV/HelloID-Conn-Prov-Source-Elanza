@@ -35,12 +35,12 @@ HelloID zet de REST API’s van Elanza in voor het inlezen van brondata en besch
 ## Elanza via HelloID koppelen met doelsystemen
 Je kunt Elanza via HelloID aan een breed scala aan doelsystemen koppelen. De integratie neemt je veel werk uit handen en tilt het beheer van zowel gebruikers als autorisaties naar een hoger niveau. Onder meer door het doorvoeren van mutaties in je doelsystemen op basis van informatie uit Elanza. Enkele voorbeelden van veelvoorkomende integraties zijn:
 
-**Elanza – Active Directory koppeling:** Dankzij de koppeling tussen Elanza en Active Directory elimineer je handmatig beheer en voorkom je menselijke fouten. Dankzij geautomatiseerde synchronisatie tussen Elanza en Active Directory zorgt HelloID dat accounts en autorisaties altijd up-to-date zijn. 
+* **Elanza – Active Directory koppeling:** Dankzij de koppeling tussen Elanza en Active Directory elimineer je handmatig beheer en voorkom je menselijke fouten. Dankzij geautomatiseerde synchronisatie tussen Elanza en Active Directory zorgt HelloID dat accounts en autorisaties altijd up-to-date zijn. 
 
-**Elanza – Entra ID koppeling:** Net als de koppeling met Active Directory neemt de koppeling met Entra ID je veel handmatige beheertaken uit handen, wat de kans op menselijke fouten terugdringt. Ook stel je zeker dat accounts en autorisaties altijd up-to-date zijn.
+* **Elanza – Entra ID koppeling:** Net als de koppeling met Active Directory neemt de koppeling met Entra ID je veel handmatige beheertaken uit handen, wat de kans op menselijke fouten terugdringt. Ook stel je zeker dat accounts en autorisaties altijd up-to-date zijn.
 
-**Elanza - TOPdesk koppeling:** De koppeling maakt het volautomatisch provisioneren van persoonskaarten mogelijk. Prettig, want zo kunnen bijvoorbeeld ook flexmedewerkers of uitzendkrachten gebruikmaken van de IT Service Management-processen binnen de organisatie. 
+* **Elanza - TOPdesk koppeling:** De koppeling maakt het volautomatisch provisioneren van persoonskaarten mogelijk. Prettig, want zo kunnen bijvoorbeeld ook flexmedewerkers of uitzendkrachten gebruikmaken van de IT Service Management-processen binnen de organisatie. 
 
-**Elanza - Nedap ONS koppeling:** De integratie geeft zorgmedewerkers altijd de juiste autorisaties binnen het Elektronisch Cliëntendossier. Zo weet je zeker dat medewerkers met actieve dienst altijd bij de juiste gegevens kunnen. 
+* **Elanza - Nedap ONS koppeling:** De integratie geeft zorgmedewerkers altijd de juiste autorisaties binnen het Elektronisch Cliëntendossier. Zo weet je zeker dat medewerkers met actieve dienst altijd bij de juiste gegevens kunnen. 
 
 Meer dan 200 connectoren zijn beschikbaar voor HelloID. Je koppelt de IAM-oplossing van Tools4ever hiermee aan een breed scala aan bron- en doelsystemen. De brede integratiemogelijkheden stellen je in staat Elanza aan nagenoeg alle populaire doelsystemen te koppelen. Een overzicht van alle connectoren is [hier](https://www.tools4ever.nl/connectoren/) beschikbaar. 
