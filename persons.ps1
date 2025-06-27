@@ -213,7 +213,7 @@ try {
 
         $personObj = [PSCustomObject]@{
             ExternalId  = $worker.worker.workerNumber
-            DisplayName = "$($worker.worker.firstName) $($worker.worker.lastName)".Trim(' ')
+            DisplayName = "$($worker.worker.firstName) $($worker.worker.lastName) ($($worker.worker.workerNumber))".Trim(' ')
             FirstName   = $worker.worker.firstName
             LastName    = $worker.worker.lastName
             Email       = $worker.worker.email
