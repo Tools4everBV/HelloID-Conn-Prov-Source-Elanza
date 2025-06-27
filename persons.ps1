@@ -143,7 +143,7 @@ try {
             ProductName           = 'unavailable'
             DepartmentName        = 'unavailable'
             DepartmentCode        = 'unavailable'
-            SkillName             = 'unavailable'
+            SkillNames            = 'unavailable'
             DepartmentBrandName   = 'unavailable'
             ProductHrFunctionCode = 'unavailable'
         }
