@@ -1,17 +1,17 @@
 {
     "personMappings": [
         {
-            "name": "Contact.Business.Email",
+            "name": "Contact.Personal.Email",
             "mode": "field",
             "value": "Email",
             "validation": {
-                "required": false
+                "required": true
             }
         },
         {
-            "name": "Contact.Business.Phone.Mobile",
-            "mode": "field",
-            "value": "PhoneNumber",
+            "name": "Contact.Personal.Phone.Mobile",
+            "mode": "complex",
+            "value": "function startsWith(a, b) {\r\n\tlet retVal = false;\r\n\tlet test = a.substring(0, b.length);\r\n\tif (test === b) {\r\n\t\tretVal = true;\r\n\t}\r\n\treturn retVal;\r\n}\r\n\r\nfunction getValue(){\r\n    let returnValue = '';    \r\n    if (typeof source.PhoneNumber !== 'undefined' && source.PhoneNumber) { \r\n        returnValue = source.PhoneNumber.trim()       \r\n        returnValue = returnValue.replace(/[^0-9+]/g, '')\r\n        if (startsWith(returnValue, '06')) {            \r\n\t\t\treturnValue = returnValue.replace('06', '+316');\r\n        }\t\t\r\n    };\r\n\r\n    return returnValue;\r\n}\r\n\r\ngetValue();",
             "validation": {
                 "required": false
             }
@@ -20,6 +20,14 @@
             "name": "ExternalId",
             "mode": "field",
             "value": "ExternalId",
+            "validation": {
+                "required": true
+            }
+        },
+        {
+            "name": "Name.Convention",
+            "mode": "fixed",
+            "value": "B",
             "validation": {
                 "required": false
             }
@@ -33,7 +41,23 @@
             }
         },
         {
+            "name": "Name.FamilyNamePrefix",
+            "mode": "field",
+            "value": "Prefix",
+            "validation": {
+                "required": false
+            }
+        },
+        {
             "name": "Name.GivenName",
+            "mode": "field",
+            "value": "FirstName",
+            "validation": {
+                "required": false
+            }
+        },
+        {
+            "name": "Name.NickName",
             "mode": "field",
             "value": "FirstName",
             "validation": {
@@ -43,19 +67,35 @@
     ],
     "contractMappings": [
         {
-            "name": "ExternalId",
+            "name": "Department.DisplayName",
+            "mode": "complex",
+            "value": "function GetDepartmentName() {\r\n    let departmentName = \"\";\r\n\r\n    if (typeof sourceContract.DepartmentName !== 'undefined' && sourceContract.DepartmentName) {\r\n        const fullName = sourceContract.DepartmentName;\r\n        const parts = fullName.split('_');\r\n        departmentName = parts.length > 1 ? parts.slice(1).join('_') : fullName;\r\n\r\n        departmentName = departmentName.trim();\r\n    }\r\n    \r\n    return departmentName;\r\n}\r\n\r\nGetDepartmentName();",
+            "validation": {
+                "required": true
+            }
+        },
+        {
+            "name": "Department.ExternalId",
             "mode": "field",
-            "value": "ExternalId",
+            "value": "DepartmentCode",
+            "validation": {
+                "required": true
+            }
+        },
+        {
+            "name": "EndDate",
+            "mode": "complex",
+            "value": "function getValue(){\r\n    let returnValue = sourceContract.endAt;\r\n\r\n    if(sourceContract.endAt == '9999-12-31'){\r\n        returnValue = null;\r\n    }\r\n    return returnValue;\r\n}\r\n\r\ngetValue()",
             "validation": {
                 "required": false
             }
         },
         {
-            "name": "Type.Description",
+            "name": "ExternalId",
             "mode": "field",
-            "value": "Type",
+            "value": "ExternalId",
             "validation": {
-                "required": false
+                "required": true
             }
         },
         {
@@ -63,29 +103,37 @@
             "mode": "field",
             "value": "startAt",
             "validation": {
-                "required": false
+                "required": true
             }
         },
         {
-            "name": "EndDate",
+            "name": "Title.Code",
             "mode": "field",
-            "value": "endAt",
+            "value": "ProductHrFunctionCode",
             "validation": {
-                "required": false
+                "required": true
+            }
+        },
+        {
+            "name": "Title.ExternalId",
+            "mode": "field",
+            "value": "ProductHrFunctionCode",
+            "validation": {
+                "required": true
             }
         },
         {
             "name": "Title.Name",
             "mode": "field",
-            "value": "title",
+            "value": "ProductName",
             "validation": {
-                "required": false
+                "required": true
             }
         },
         {
-            "name": "Department.ExternalId",
+            "name": "Type.Description",
             "mode": "field",
-            "value": "departmentUuid",
+            "value": "Type",
             "validation": {
                 "required": false
             }
