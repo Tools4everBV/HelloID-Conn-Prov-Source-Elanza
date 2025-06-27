@@ -18,8 +18,8 @@
         },
         {
             "name": "ExternalId",
-            "mode": "complex",
-            "value": "function getExternalId(){\r\n    let externalId = 'ELZ_' + source.ExternalId;\r\n\r\n    return externalId;\r\n}\r\n\r\ngetExternalId();",
+            "mode": "field",
+            "value": "ExternalId",
             "validation": {
                 "required": true
             }
