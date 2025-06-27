@@ -47,6 +47,14 @@ Currently the following endpoints are being used where the _plannedWorkers_ is c
 
 ## Getting started
 
+### HelloID Icon URL
+URL of the icon used for the HelloID Provisioning target system.
+
+```
+https://raw.githubusercontent.com/Tools4everBV/HelloID-Conn-Prov-Source-Elanza/refs/heads/main/Icon.png
+```
+
+
 ### Connection settings
 
 The following settings are required to connect to the API.
@@ -102,7 +110,7 @@ During testing we sometimes stumbled upon workers without a `workerNumber`. The 
 
 #### No API call to get a list of departments and products
 
-Unfortunately there are no API calls to retrieve a list of departments or products. Both can only be retrieved by making an API call using the `uuid` on a worker.shift.
+Unfortunately there are no API calls to retrieve a list of products. They can only be retrieved by making an API call using the `uuid` on a worker.shift.
 
 The response to retrieve all _plannedWorkers_ is as follows:
 
@@ -125,18 +133,16 @@ The response to retrieve all _plannedWorkers_ is as follows:
 ]
 ```
 
-Both the `productUuid` and `departmentUuid` are part of the _shifts_ object.
+The `productUuid` are part of the _shifts_ object.
 
 - The _productUuid__ contains a _uuid_ that corresponds with a _product_. The _product_ contains the _skill_ or 'competitie'. 
   Its mapped to the _title_ attribute within HelloID.
 
-- The _departmentUuid_ contains the _uuid_ of the department and corresponds with a _department_ object.
-  
-Both the _product_ and _department_ have a __1:N__ relation.
+The _product_ has a __1:N__ relation.
 
-##### Person / department import
+##### Person import
 
-Because the _product_ and _department_ have a __1:N__ relation, we added some logic to prevent retrieving the same object in both the _person_ and _department_ import.
+Because the _product_ has a __1:N__ relation, we added some logic to prevent retrieving the same object in the _person_ import.
 
 #### Customized error handling
 

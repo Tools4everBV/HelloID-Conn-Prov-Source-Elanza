@@ -120,11 +120,8 @@ try {
         $detailsStartDate = (Get-Date).ToUniversalTime().AddDays( - $($config.ShiftDetailsStart)).Date
         $detailsEndDate = $futureDays
 
-        #$historyStartDate = $historicalDays
-        #$historyEndDate = (Get-Date $detailsStartDate).ToUniversalTime().AddDays(-1).Date
-
-        $historyStartDate = (Get-Date $detailsStartDate).ToUniversalTime().AddDays(-1).Date
-        $historyEndDate = $historicalDays
+        $historyStartDate = $historicalDays
+        $historyEndDate = (Get-Date $detailsStartDate).ToUniversalTime().AddDays(-1).Date
 
         # Create an empty list that will hold all shifts (contracts)
         $contracts = [System.Collections.Generic.List[object]]::new()
@@ -138,8 +135,6 @@ try {
             # Add the same fields as for shift. Otherwise, the HelloID mapping will fail
             # The value of both the 'startAt' and 'endAt' cannot be null. If empty, HelloID is unable
             # to determine the start/end date, resulting in the contract marked as 'active'.
-            # startAt               = $historyStartDate.ToString('yyyy-MM-ddTHH:mm:ssZ')
-            # endAt                 = $historyEndDate.ToString('yyyy-MM-ddTHH:mm:ssZ')
             startAt               = $historyStartDate.ToString('yyyy-MM-dd')
             endAt                 = $historyEndDate.ToString('yyyy-MM-dd')
             title                 = 'unavailable'
@@ -156,7 +151,6 @@ try {
 
         foreach ($shift in $worker.shifts) {
             if (![string]::IsNullOrEmpty($shift.StartAt)) {
-                # $shiftStart = [DateTime]::Parse($shift.startAt)
                 $shiftStart = [DateTime]::ParseExact($shift.startAt, "MM/dd/yyyy HH:mm:ss", [System.Globalization.CultureInfo]::InvariantCulture)
 
                 if ($shiftStart -ge $detailsStartDate -and $shiftStart -le $detailsEndDate) {
@@ -191,7 +185,8 @@ try {
                         }
                     }
 
-                    # Enhance shift with skill for extra information, such as: name - adjust to meet your needs
+                    # Enhance shift with skills for extra information, such as: name - adjust to meet your needs
+                    $shiftSkills = [System.Collections.Generic.List[object]]::new()
                     foreach ($skillUuid in $shift.skillUuids) {
                         $shiftSkill = $skillsGrouped["$($skillUuid)"]
                         if ($null -ne $shiftSkill) {
@@ -199,10 +194,11 @@ try {
                             $shiftSkill = $shiftSkill | Select-Object -First 1
                         
                             if (![string]::IsNullOrEmpty($shiftSkill)) {
-                                $shift | Add-Member -MemberType 'NoteProperty' -Name 'SkillName' -Value $shiftSkill.name
+                                $shiftSkills.Add($shiftSkill)
                             }
                         }
                     }
+                    $shift | Add-Member -MemberType 'NoteProperty' -Name 'SkillNames' -Value ($shiftSkills.name -join ';')
 
                     $contracts.Add($shift)
                 }
