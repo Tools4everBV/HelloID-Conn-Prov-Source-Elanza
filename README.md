@@ -16,14 +16,15 @@
   - [Introduction](#introduction)
     - [Endpoints](#endpoints)
   - [Getting started](#getting-started)
+    - [HelloID Icon URL](#helloid-icon-url)
     - [Connection settings](#connection-settings)
     - [Remarks](#remarks)
       - [Logic in-depth](#logic-in-depth)
         - [What if the `startAt` is empty?](#what-if-the-startat-is-empty)
       - [`HistoricalDays` \& `FutureDays`](#historicaldays--futuredays)
       - [Empty `workerNumber`](#empty-workernumber)
-      - [No API call to get a list of departments and products](#no-api-call-to-get-a-list-of-departments-and-products)
-        - [Person / department import](#person--department-import)
+      - [No API call to get a list of products](#no-api-call-to-get-a-list-of-products)
+        - [Person import](#person-import)
       - [Customized error handling](#customized-error-handling)
   - [Getting help](#getting-help)
   - [HelloID docs](#helloid-docs)
@@ -37,11 +38,11 @@ _HelloID-Conn-Prov-Source-Elanza_ is a _source_ connector. The purpose of this c
 
 Currently the following endpoints are being used where the _plannedWorkers_ is custom made for _HelloID_.
 
-| Endpoint         |
-| ---------------- |
-| /plannedWorkers  |
-| /department/{id} |
-| /product/{id}    |
+| Endpoint        |
+| --------------- |
+| /plannedWorkers |
+| /departments    |
+| /product/{id}   |
 
 >  [Elanzi API documentation](https://app.elanza.nl/rest-api/v1/documentation).
 
@@ -59,13 +60,13 @@ https://raw.githubusercontent.com/Tools4everBV/HelloID-Conn-Prov-Source-Elanza/r
 
 The following settings are required to connect to the API.
 
-| Setting    | Description                                                                            | Mandatory |
-| ---------- | -------------------------------------------------------------------------------------- | --------- |
-| ApiKey     | The ApiKey to connect to the API                                                       | Yes       |
-| BaseUrl    | The URL to the API                                                                     | Yes       |
-| HistoricalDays | - The number of days in the past from which the workers and shifts will be imported.<br> - Will be converted to a `[DateTime]` object containing the _current date_ __minus__ the number of days specified. | Yes       |
-| FutureDays | - The number of days in the past from which the workers and shifts will be imported.<br> - Will be converted to a `[DateTime]` object containing the _current date_ __plus__ the number of days specified. | Yes       |
-| ShiftDetailsStart | The number of days for which the shift details will be added as a contract rule | Yes       |
+| Setting           | Description                                                                                                                                                                                                 | Mandatory |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| ApiKey            | The ApiKey to connect to the API                                                                                                                                                                            | Yes       |
+| BaseUrl           | The URL to the API                                                                                                                                                                                          | Yes       |
+| HistoricalDays    | - The number of days in the past from which the workers and shifts will be imported.<br> - Will be converted to a `[DateTime]` object containing the _current date_ __minus__ the number of days specified. | Yes       |
+| FutureDays        | - The number of days in the past from which the workers and shifts will be imported.<br> - Will be converted to a `[DateTime]` object containing the _current date_ __plus__ the number of days specified.  | Yes       |
+| ShiftDetailsStart | The number of days for which the shift details will be added as a contract rule                                                                                                                             | Yes       |
 
 ### Remarks
 
@@ -108,7 +109,7 @@ The `PastDays` and `FutureDays` configuration settings are used to specify the t
 
 During testing we sometimes stumbled upon workers without a `workerNumber`. The `workerNumber` is mandatory since its gets mapped to the `ExternalId` within HelloID. We made the assumption that this issue won't occur in a production environment.
 
-#### No API call to get a list of departments and products
+#### No API call to get a list of products
 
 Unfortunately there are no API calls to retrieve a list of products. They can only be retrieved by making an API call using the `uuid` on a worker.shift.
 
@@ -126,7 +127,6 @@ The response to retrieve all _plannedWorkers_ is as follows:
         "startAt": "2024-02-04T11:00:00.000Z",
         "endAt": "2024-02-04T17:00:00.000Z",
         "productUuid": "1bd6cd19-1eb2-487e-bd8e-c4f66cb567fa",
-        "departmentUuid": "1bd6cd19-1eb2-487e-bd8e-c4f66cb567fa",
       }
     ],
   }
@@ -148,7 +148,7 @@ Because the _product_ has a __1:N__ relation, we added some logic to prevent ret
 
 The _Elanza_ API does not return a whole lot of error information. The error handling logic is tested on both _Windows PowerShell_ and _PowerShell Core_.
 
-One important thing to note is that the `Invoke-ElanzaRestMethod` function is modified to __NOT__ throw in case a _product_ or _department_ `uuid` does not exist. This way, we ensure that the import does not fail.
+One important thing to note is that the `Invoke-ElanzaRestMethod` function is modified to __NOT__ throw in case a _product_ `uuid` does not exist. This way, we ensure that the import does not fail.
 
 ## Getting help
 
