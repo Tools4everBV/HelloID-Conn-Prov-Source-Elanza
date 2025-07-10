@@ -16,7 +16,6 @@
   - [Introduction](#introduction)
     - [Endpoints](#endpoints)
   - [Getting started](#getting-started)
-    - [HelloID Icon URL](#helloid-icon-url)
     - [Connection settings](#connection-settings)
     - [Remarks](#remarks)
       - [Logic in-depth](#logic-in-depth)
@@ -47,14 +46,6 @@ Currently the following endpoints are being used where the _plannedWorkers_ is c
 >  [Elanzi API documentation](https://app.elanza.nl/rest-api/v1/documentation).
 
 ## Getting started
-
-### HelloID Icon URL
-URL of the icon used for the HelloID Provisioning target system.
-
-```
-https://raw.githubusercontent.com/Tools4everBV/HelloID-Conn-Prov-Source-Elanza/refs/heads/main/Icon.png
-```
-
 
 ### Connection settings
 
