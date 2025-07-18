@@ -151,9 +151,13 @@ try {
 
         foreach ($shift in $worker.shifts) {
             if (![string]::IsNullOrEmpty($shift.StartAt)) {
-                $shiftStart = [DateTime]::ParseExact($shift.startAt, "MM/dd/yyyy HH:mm:ss", [System.Globalization.CultureInfo]::InvariantCulture)
+                $shiftStart = [DateTime]::ParseExact($shift.startAt, "MM/dd/yyyy HH:mm:ss", [System.Globalization.CultureInfo]::InvariantCulture) #Shift needs convert from datetime to datew
+                
+                # shiftStart           # should be date with time 00:00:00
+                # detailsStartDate     # should be date with time 00:00:00
+                # detailsEndDate        # should be date with time 00:00:00
 
-                if ($shiftStart -ge $detailsStartDate -and $shiftStart -le $detailsEndDate) {
+                if ($shiftStart -ge $detailsStartDate -and $shiftStart -le $detailsEndDate) {           #todo: comparison needs convert from datetime to date
                     $shift | Add-Member -MemberType 'NoteProperty' -Name 'ExternalId'  -Value $shift.uuid
                     $shift | Add-Member -MemberType 'NoteProperty' -Name 'Type'        -Value 'ActiveShift'
 
@@ -199,10 +203,23 @@ try {
                         }
                     }
                     $shift | Add-Member -MemberType 'NoteProperty' -Name 'SkillNames' -Value ($shiftSkills.name -join ';')
+                    
+                    # Make sure that startAt and endAt are returned as a date string
+                    if (![string]::IsNullOrEmpty($shift.startAt)){
+                        $shift.startAt = $shift.startAt.ToString('yyyy-MM-dd')
+                    }
+                    if (![string]::IsNullOrEmpty($shift.endAt)){
+                        $shift.endAt = $shift.endAt.ToString('yyyy-MM-dd')
+                    }
 
                     $contracts.Add($shift)
                 }
-                elseif ($shiftStart -ge $historyStartDate -and $shiftStart -le $historyEndDate) {
+                
+                # shiftStart           # should be date with time 00:00:00
+                # historyStartDate     # should be date with time 00:00:00
+                # historyEndDate        # should be date with time 00:00:00
+                
+                elseif ($shiftStart -ge $historyStartDate -and $shiftStart -le $historyEndDate) {       #historyStartDate = date; historyEndDate = date; shiftStart = datetime; 
                     $historicalShiftContract['Shifts'].Add($shift)
                 }
             }
