@@ -1,7 +1,7 @@
 ######################################################
 # HelloID-Conn-Prov-Source-Elanza-Departments
 #
-# Version: 1.1.0
+# Version: 1.1.1
 ######################################################
 
 # Initialize default values
